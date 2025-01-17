@@ -1,0 +1,92 @@
+PSNR for 1_LR.jpg: 32.90
+SSIM for 1_LR.jpg: 0.8544
+NIQE for 1_LR.jpg: 5.3838
+--------------
+PSNR for 2_LR.jpg: 35.69
+SSIM for 2_LR.jpg: 0.8736
+NIQE for 2_LR.jpg: 5.7605
+--------------
+PSNR for 3_LR.jpg: 33.83
+SSIM for 3_LR.jpg: 0.8479
+NIQE for 3_LR.jpg: 4.8283
+--------------
+PSNR for 4_LR.jpg: 32.18
+SSIM for 4_LR.jpg: 0.8131
+NIQE for 4_LR.jpg: 6.2634
+--------------
+PSNR for 5_LR.jpg: 34.37
+SSIM for 5_LR.jpg: 0.8943
+NIQE for 5_LR.jpg: 5.2751
+--------------
+PSNR for 6_LR.jpg: 51.98
+SSIM for 6_LR.jpg: 0.9822
+NIQE for 6_LR.jpg: 6.7865
+--------------
+PSNR for 7_LR.jpg: 34.09
+SSIM for 7_LR.jpg: 0.8665
+NIQE for 7_LR.jpg: 4.4660
+--------------
+PSNR for 8_LR.jpg: 35.28
+SSIM for 8_LR.jpg: 0.8280
+NIQE for 8_LR.jpg: 4.7870
+--------------
+PSNR for img_001_SRF_2_LR.png: 32.56
+SSIM for img_001_SRF_2_LR.png: 0.7841
+NIQE for img_001_SRF_2_LR.png: 5.7193
+--------------
+PSNR for img_002_SRF_2_LR.png: 35.97
+SSIM for img_002_SRF_2_LR.png: 0.8814
+NIQE for img_002_SRF_2_LR.png: 5.4910
+--------------
+PSNR for img_003_SRF_2_LR.png: 34.55
+SSIM for img_003_SRF_2_LR.png: 0.8690
+NIQE for img_003_SRF_2_LR.png: 5.4456
+--------------
+PSNR for img_004_SRF_2_LR.png: 34.91
+SSIM for img_004_SRF_2_LR.png: 0.8613
+NIQE for img_004_SRF_2_LR.png: 7.7944
+--------------
+PSNR for img_005_SRF_2_LR.png: 30.70
+SSIM for img_005_SRF_2_LR.png: 0.9172
+NIQE for img_005_SRF_2_LR.png: 6.5801
+--------------
+PSNR for img_006_SRF_2_LR.png: 42.87
+SSIM for img_006_SRF_2_LR.png: 0.8949
+NIQE for img_006_SRF_2_LR.png: 6.9994
+--------------
+PSNR for img_007_SRF_2_LR.png: 34.83
+SSIM for img_007_SRF_2_LR.png: 0.9368
+NIQE for img_007_SRF_2_LR.png: 5.2045
+--------------
+PSNR for img_008_SRF_2_LR.png: 37.16
+SSIM for img_008_SRF_2_LR.png: 0.9646
+NIQE for img_008_SRF_2_LR.png: 6.1310
+--------------
+PSNR for img_009_SRF_2_LR.png: 39.38
+SSIM for img_009_SRF_2_LR.png: 0.9334
+NIQE for img_009_SRF_2_LR.png: 6.0444
+--------------
+PSNR for img_010_SRF_2_LR.png: 35.53
+SSIM for img_010_SRF_2_LR.png: 0.8915
+NIQE for img_010_SRF_2_LR.png: 5.2102
+--------------
+PSNR for img_011_SRF_2_LR.png: 36.16
+SSIM for img_011_SRF_2_LR.png: 0.9749
+NIQE for img_011_SRF_2_LR.png: 4.8275
+--------------
+PSNR for img_012_SRF_2_LR.png: 39.67
+SSIM for img_012_SRF_2_LR.png: 0.9229
+NIQE for img_012_SRF_2_LR.png: 5.7784
+--------------
+PSNR for img_013_SRF_2_LR.png: 31.20
+SSIM for img_013_SRF_2_LR.png: 0.9571
+NIQE for img_013_SRF_2_LR.png: 7.1820
+--------------
+PSNR for img_014_SRF_2_LR.png: 33.21
+SSIM for img_014_SRF_2_LR.png: 0.9481
+NIQE for img_014_SRF_2_LR.png: 5.5060
+--------------
+
+Median PSNR: 34.87
+Median SSIM: 0.8929
+Median NIQE: 5.6126
