@@ -3,6 +3,8 @@ import torch.backends.cudnn as cudnn
 import numpy as np
 import PIL.Image as pil_image
 import os
+import platform
+import datetime
 from models import SRCNN
 from utils import convert_rgb_to_ycbcr, convert_ycbcr_to_rgb, calc_psnr
 from skimage.metrics import structural_similarity as ssim
@@ -32,13 +34,27 @@ def upscale_image(weights_file, input_folder, output_folder, output_log, scale=2
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    # Списки для хранения значений PSNR, SSIM и NIQE
-    psnr_list = []
-    ssim_list = []
-    niqe_list = []
-
     # Открываем файл для записи логов
     with open(output_log, 'w') as log_file:
+        # Системная информация
+        log_file.write(f"System Information:\n")
+        log_file.write(f"Date and Time: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        log_file.write(f"Operating System: {platform.system()} {platform.release()}\n")
+        log_file.write(f"Python Version: {platform.python_version()}\n")
+        log_file.write(f"Development Environment: {platform.python_implementation()} {torch.__version__}\n")
+        log_file.write(f"Device: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU: ' + platform.processor()}\n")
+        
+        # Предметная информация
+        log_file.write(f"\nModel Name: SRCNN\n")
+        log_file.write(f"Input Data Source: {input_folder}\n")
+        log_file.write(f"Scaling Factor: x{scale}\n")
+        log_file.write(f"\nResults:\n")
+        log_file.write('--------------\n')
+
+        # Списки для хранения значений PSNR, SSIM и NIQE
+        psnr_list = []
+        ssim_list = []
+        niqe_list = []
 
         # Обработка всех изображений в папке
         for image_name in os.listdir(input_folder):
@@ -87,9 +103,9 @@ def upscale_image(weights_file, input_folder, output_folder, output_log, scale=2
             else:
                 log_file.write(f'HR image for {image_name} not found. Skipping SSIM calculation.\n')
 
-            # Вычисление NIQE с помощью pyiqa
+            # Вычисление NIQE
             preds_image = pil_image.fromarray(preds_np.astype(np.uint8))  # Преобразование в формат PIL
-            niqe_value = niqe_model(preds_image)  # Вычисление NIQE
+            niqe_value = niqe_model(preds_image)
             niqe_list.append(niqe_value.item())
             log_file.write(f'NIQE for {image_name}: {niqe_value.item():.4f}\n')
             log_file.write('--------------\n')

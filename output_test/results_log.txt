@@ -1,3 +1,16 @@
+System Information:
+Date and Time: 2025-01-22 12:28:01
+Operating System: Windows 10
+Python Version: 3.9.13
+Development Environment: CPython 2.4.1+cpu
+Device: CPU: Intel64 Family 6 Model 140 Stepping 1, GenuineIntel
+
+Model Name: SRCNN
+Input Data Source: D:\SRCNN\Set14
+Scaling Factor: x2
+
+Results:
+--------------
 PSNR for 1_LR.jpg: 32.90
 SSIM for 1_LR.jpg: 0.8544
 NIQE for 1_LR.jpg: 5.3838
