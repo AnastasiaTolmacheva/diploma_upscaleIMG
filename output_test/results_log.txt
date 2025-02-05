@@ -1,0 +1,105 @@
+System Information:
+Date and Time: 2025-01-22 15:35:15
+Operating System: Windows 10
+Python Version: 3.9.13
+Development Environment: CPython 2.4.1+cpu
+Device: CPU: Intel64 Family 6 Model 140 Stepping 1, GenuineIntel
+
+Model Name: ESPCN
+Input Data Source: D:\ESPCN0\Set14
+Scaling Factor: x2
+
+Results:
+--------------
+PSNR for 1_LR.jpg: 51.13
+SSIM for 1_LR.jpg: 0.8438
+NIQE for 1_LR.jpg: 6.2118
+--------------
+PSNR for 2_LR.jpg: 54.02
+SSIM for 2_LR.jpg: 0.8763
+NIQE for 2_LR.jpg: 6.5246
+--------------
+PSNR for 3_LR.jpg: 52.14
+SSIM for 3_LR.jpg: 0.8419
+NIQE for 3_LR.jpg: 6.5494
+--------------
+PSNR for 4_LR.jpg: 51.04
+SSIM for 4_LR.jpg: 0.8044
+NIQE for 4_LR.jpg: 6.3813
+--------------
+PSNR for 5_LR.jpg: 52.96
+SSIM for 5_LR.jpg: 0.8843
+NIQE for 5_LR.jpg: 6.2397
+--------------
+PSNR for 6_LR.jpg: 58.99
+SSIM for 6_LR.jpg: 0.9830
+NIQE for 6_LR.jpg: 7.9782
+--------------
+PSNR for 7_LR.jpg: 51.89
+SSIM for 7_LR.jpg: 0.8597
+NIQE for 7_LR.jpg: 6.4123
+--------------
+PSNR for 8_LR.jpg: 53.33
+SSIM for 8_LR.jpg: 0.8169
+NIQE for 8_LR.jpg: 6.5095
+--------------
+PSNR for img_001_SRF_2_LR.png: 51.64
+SSIM for img_001_SRF_2_LR.png: 0.7312
+NIQE for img_001_SRF_2_LR.png: 6.9768
+--------------
+PSNR for img_002_SRF_2_LR.png: 54.07
+SSIM for img_002_SRF_2_LR.png: 0.8531
+NIQE for img_002_SRF_2_LR.png: 6.8735
+--------------
+PSNR for img_003_SRF_2_LR.png: 52.73
+SSIM for img_003_SRF_2_LR.png: 0.8294
+NIQE for img_003_SRF_2_LR.png: 6.9412
+--------------
+PSNR for img_004_SRF_2_LR.png: 53.26
+SSIM for img_004_SRF_2_LR.png: 0.8114
+NIQE for img_004_SRF_2_LR.png: 7.7736
+--------------
+PSNR for img_005_SRF_2_LR.png: 49.68
+SSIM for img_005_SRF_2_LR.png: 0.8739
+NIQE for img_005_SRF_2_LR.png: 6.4289
+--------------
+PSNR for img_006_SRF_2_LR.png: 57.72
+SSIM for img_006_SRF_2_LR.png: 0.8791
+NIQE for img_006_SRF_2_LR.png: 7.3025
+--------------
+PSNR for img_007_SRF_2_LR.png: 53.25
+SSIM for img_007_SRF_2_LR.png: 0.9113
+NIQE for img_007_SRF_2_LR.png: 6.9646
+--------------
+PSNR for img_008_SRF_2_LR.png: 55.16
+SSIM for img_008_SRF_2_LR.png: 0.9534
+NIQE for img_008_SRF_2_LR.png: 7.0422
+--------------
+PSNR for img_009_SRF_2_LR.png: 57.17
+SSIM for img_009_SRF_2_LR.png: 0.9200
+NIQE for img_009_SRF_2_LR.png: 7.2667
+--------------
+PSNR for img_010_SRF_2_LR.png: 53.14
+SSIM for img_010_SRF_2_LR.png: 0.8628
+NIQE for img_010_SRF_2_LR.png: 6.6777
+--------------
+PSNR for img_011_SRF_2_LR.png: 54.90
+SSIM for img_011_SRF_2_LR.png: 0.9633
+NIQE for img_011_SRF_2_LR.png: 7.2625
+--------------
+PSNR for img_012_SRF_2_LR.png: 57.31
+SSIM for img_012_SRF_2_LR.png: 0.9133
+NIQE for img_012_SRF_2_LR.png: 7.8294
+--------------
+PSNR for img_013_SRF_2_LR.png: 48.91
+SSIM for img_013_SRF_2_LR.png: 0.9454
+NIQE for img_013_SRF_2_LR.png: 6.5109
+--------------
+PSNR for img_014_SRF_2_LR.png: 51.05
+SSIM for img_014_SRF_2_LR.png: 0.9221
+NIQE for img_014_SRF_2_LR.png: 7.2345
+--------------
+
+Median PSNR: 53.20
+Median SSIM: 0.8751
+Median NIQE: 6.9073
