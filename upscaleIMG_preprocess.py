@@ -1,5 +1,6 @@
 import argparse
 import glob
+import traceback
 import h5py
 import numpy as np
 import os
@@ -8,16 +9,16 @@ import PIL.Image as pil_image
 from utils import convert_rgb_to_y
 
 
-def log_message(log_filename, message):
+def log_message(log_filename: str, message: str) -> None:
     """
-    Функция для записи логов в файл и вывода сообщений в консоль.
+    Запись логов в файл и вывод сообщений в консоль с меткой даты.
 
-    Входные параметры:
-    - log_filename (str): Путь к файлу для записи логов.
-    - message (str): Сообщение, которое будет записано в лог.
+    На входе:
+    - log_filename (str): путь к файлу для записи логов;
+    - message (str): сообщение, которое будет записано в лог.
 
-    Выход:
-    Лог записывается в файл и выводится в консоль в зависимости от уровня логирования.
+    На выходе:
+    - записывает лог в файл и выводит его в консоль.
     """
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     formatted_message = f"[{timestamp}] {message}"
@@ -30,39 +31,49 @@ def log_message(log_filename, message):
 
 def process_images(args, is_train):
     """
-    Функция для предобработки изображений моделей SRCNN или ESPCN.
+    Предобработка изображений для моделей SRCNN или ESPCN: функция создает патчи для обучения
+    или сохраняет полные LR и HR изображения для валидации.
 
-    Входные параметры:
-    - args (Namespace): Аргументы командной строки (определяются через argparse).
-    - is_train (bool): Флаг, указывающий на режим обучения (True - обучение, False - оценка/валидация).
+    На входе:
+    - args (argparse.Namespace): объект, содержащий параметры командной строки:
+        * args.model (str): название модели ("SRCNN" или "ESPCN");
+        * args.images_dir (str): путь к директории с изображениями;
+        * args.scale (int): коэффициент увеличения разрешения (например, 2, 3, 4);
+        * args.patch_size (int): размер патча для обучения (используется только в is_train=True);
+        * args.stride (int): шаг сканирования при нарезке патчей;
+        * args.eval (bool): флаг режима валидации;
+    - is_train (bool): флаг, указывающий на режим обучения (True — обучение, False — валидация).
 
-    Выход:
-    - None. Обрабатывает изображения и сохраняет их в HDF5 файл.
+    На выходе:
+    - HDF5-файл с предобработанными изображениями и/или патчами в директории datasets;
+    - лог-файл с подробной информацией о работе в директории logs.
     """
-
     os.makedirs("logs", exist_ok=True)
     os.makedirs("datasets", exist_ok=True)
-
-    # Формируем имя H5-файла: {dataset}_{model}_x{scale}.h5
-    dataset_name = os.path.basename(os.path.normpath(args.images_dir))  # Получаем название папки
-    h5_filename = f"{dataset_name}_{args.model}_x{args.scale}.h5"
-    output_path = os.path.join("datasets", h5_filename)
-
+    
     # Формирование имени лог-файла
     start_time = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     log_filename = f"logs/preprocess_{args.model}_{start_time}.txt"
-
-    h5_file = h5py.File(output_path, 'w')
-
-    # Логирование параметров
-    log_message(log_filename, f"Parameters: \n- Model: {args.model}\n- Images directory: {args.images_dir}\n"
-                          f"- Prepared file name: {output_path}\n- Scaling factor: {args.scale}\n"
-                          f"- Patch size: {args.patch_size}\n- Stride: {args.stride}\n- Evaluation: {args.eval}")
-    log_message(log_filename, "=== Starting image preprocessing ===")
     
     try:
         image_paths = sorted(glob.glob('{}/*'.format(args.images_dir)))
         log_message(log_filename, f"{len(image_paths)} images found for processing.")
+        if len(image_paths) == 0:
+            log_message(log_filename, f"Check directory {args.images_dir} for images.")
+            return
+        
+        # Формируем имя H5-файла: {dataset}_{model}_x{scale}.h5
+        dataset_name = os.path.basename(os.path.normpath(args.images_dir))  # Получаем название папки
+        h5_filename = f"{dataset_name}_{args.model}_x{args.scale}.h5"
+        output_path = os.path.join("datasets", h5_filename)
+
+        h5_file = h5py.File(output_path, 'w')
+
+        # Логирование параметров
+        log_message(log_filename, f"Parameters: \n- Model: {args.model}\n- Images directory: {args.images_dir}\n"
+                            f"- Prepared file name: {output_path}\n- Scaling factor: {args.scale}\n"
+                            f"- Patch size: {args.patch_size}\n- Stride: {args.stride}\n- Evaluation: {args.eval}")
+        log_message(log_filename, "=== Starting image preprocessing ===")
 
         # Создаем группы для хранения данных
         if not is_train:
@@ -128,10 +139,9 @@ def process_images(args, is_train):
 
         h5_file.close()
         log_message(log_filename, f"Data successfully saved to {output_path}")
-        log_message(log_filename, "Preprocessing completed")
 
     except Exception as e:
-        log_message(log_filename, f"An error occurred: {str(e)}")
+        log_message(log_filename, f"An error occurred: {str(e)}\n{traceback.format_exc()}")
 
 
 if __name__ == '__main__':
@@ -141,8 +151,11 @@ if __name__ == '__main__':
     parser.add_argument("--scale", default=2, type=int, choices=[2, 3, 4], help="Scaling factor for super-resolution")
     parser.add_argument("--patch_size", type=int, default=33, help="Size of image patches")
     parser.add_argument("--stride", type=int, default=14, help="Stride for patch extraction")
-    parser.add_argument("--eval", action='store_true', help="Enable evaluation mode (save full images instead of patches)")
+    parser.add_argument("--eval", action="store_true", help="Enable evaluation mode (save full images instead of patches)")
 
     args = parser.parse_args()
 
-    process_images(args, not args.eval)
+    if args.patch_size <= 0 or args.stride <= 0:
+        print("Invalid value: patch_size and stride must be more than 0.")
+    else:
+        process_images(args, not args.eval)

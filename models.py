@@ -2,12 +2,13 @@ import torch
 from torch import nn
 import math
 import torch.nn.functional as F
-    
+
 
 class SRCNN(nn.Module):
     """
     SRCNN (Super-Resolution Convolutional Neural Network)
     используется для увеличения разрешения изображений.
+    Требует предварительную бикубическую интерполяцию изображения.
     """
     def __init__(self, num_channels=1):
         super(SRCNN, self).__init__()
@@ -26,7 +27,7 @@ class SRCNN(nn.Module):
 class ESPCN(nn.Module):
     """
     ESPCN (Efficient Sub-Pixel Convolutional Neural Network)
-    использует пиксельную перестановку для увеличения разрешения.
+    использует пиксельную свертку для увеличения разрешения.
     """
     def __init__(self, scale_factor, num_channels=1):
         super(ESPCN, self).__init__()
@@ -59,40 +60,44 @@ class ESPCN(nn.Module):
 class Generator(nn.Module):
     """
     Генератор для SRGAN (Super-Resolution Generative Adversarial Network)
-    создаёт изображение с высоким разрешением из изображения с низким.
+    создаёт изображение с высоким разрешением из изображения с низким с помощью генератора.
     """
     def __init__(self, scale_factor):
-        upsample_block_num = int(math.log(scale_factor, 2))
+            super(Generator, self).__init__()
 
-        super(Generator, self).__init__()
-        self.block1 = nn.Sequential(
-            nn.Conv2d(3, 64, kernel_size=9, padding=4),
-            nn.PReLU()
-        )
-        self.block2 = ResidualBlock(64)
-        self.block3 = ResidualBlock(64)
-        self.block4 = ResidualBlock(64)
-        self.block5 = ResidualBlock(64)
-        self.block6 = ResidualBlock(64)
-        self.block7 = nn.Sequential(
-            nn.Conv2d(64, 64, kernel_size=3, padding=1),
-            nn.BatchNorm2d(64)
-        )
-        block8 = [UpsampleBLock(64, 2) for _ in range(upsample_block_num)]
-        block8.append(nn.Conv2d(64, 3, kernel_size=9, padding=4))
-        self.block8 = nn.Sequential(*block8)
+            self.block1 = nn.Sequential(
+                nn.Conv2d(3, 64, kernel_size=9, padding=4),
+                nn.PReLU()
+            )
+            self.block2 = ResidualBlock(64)
+            self.block3 = ResidualBlock(64)
+            self.block4 = ResidualBlock(64)
+            self.block5 = ResidualBlock(64)
+            self.block6 = ResidualBlock(64)
+            self.block7 = nn.Sequential(
+                nn.Conv2d(64, 64, kernel_size=3, padding=1),
+                nn.BatchNorm2d(64)
+            )
+
+            if scale_factor == 3:
+                block8 = [UpsampleBLock(64, 3)]
+            else:
+                upsample_block_num = int(math.log(scale_factor, 2))
+                block8 = [UpsampleBLock(64, 2) for _ in range(upsample_block_num)]
+
+            block8.append(nn.Conv2d(64, 3, kernel_size=9, padding=4))
+            self.block8 = nn.Sequential(*block8)
 
     def forward(self, x):
         block1 = self.block1(x)
-        block2 = self.block2(block1)
-        block3 = self.block3(block2)
-        block4 = self.block4(block3)
-        block5 = self.block5(block4)
-        block6 = self.block6(block5)
-        block7 = self.block7(block6)
-        block8 = self.block8(block1 + block7)
-
-        return (torch.tanh(block8) + 1) / 2
+        x = self.block2(block1)
+        x = self.block3(x)
+        x = self.block4(x)
+        x = self.block5(x)
+        x = self.block6(x)
+        x = self.block7(x)
+        x = self.block8(block1 + x)
+        return (torch.tanh(x) + 1) / 2
 
 
 class Discriminator(nn.Module):
