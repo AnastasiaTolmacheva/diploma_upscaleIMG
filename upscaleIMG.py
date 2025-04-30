@@ -257,10 +257,11 @@ def upscale_image(model_name: str, weights_file: str, input_folder: str, output_
         image_paths = [input_folder]
     else:
         # Обрабатываем все изображения в папке
+        valid_extensions = ('.png', '.jpg', '.jpeg', '.bmp', '.tiff')
         image_paths = [
-            os.path.join(input_folder, f) 
-            for f in os.listdir(input_folder) 
-            if os.path.isfile(os.path.join(input_folder, f))
+            os.path.join(input_folder, f)
+            for f in os.listdir(input_folder)
+            if os.path.isfile(os.path.join(input_folder, f)) and f.lower().endswith(valid_extensions)
         ]
 
     for image_file in image_paths:
@@ -300,16 +301,12 @@ def upscale_image(model_name: str, weights_file: str, input_folder: str, output_
                     hr_y = hr_ycbcr[..., 0] / 255.
                     hr_y = torch.from_numpy(hr_y).to(device).unsqueeze(0).unsqueeze(0)
 
-                    # preds_resized = torch.nn.functional.interpolate(preds, size=(hr_y.size(2), hr_y.size(3)), mode='bicubic', align_corners=False)
-
                     # PSNR
-                    # psnr_value = psnr(hr_y, preds_resized)
                     psnr_value = psnr(hr_y, preds)
                     psnr_list.append(psnr_value)
                     log_message(log_filename, f'PSNR for {image_name.replace(".", f"_{model_name}_x{scale}.")}: {psnr_value:.2f} dB') # Логируем PSNR
 
                     # SSIM
-                    # preds_np = preds_resized.mul(255.0).cpu().numpy().squeeze(0).squeeze(0)
                     preds_np = preds.mul(255.0).cpu().numpy().squeeze(0).squeeze(0)
                     hr_np = hr_y.mul(255.0).cpu().numpy().squeeze(0).squeeze(0)
 
