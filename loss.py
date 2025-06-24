@@ -25,13 +25,8 @@ class GeneratorLoss(nn.Module):
             param.requires_grad = False
         self.loss_network = loss_network
 
-        # Content Loss (MSE между признаками предсказанного и реального изображений)
         self.mse_loss = nn.MSELoss()
-
-        # Adversarial Loss (Binary Cross Entropy для состязательной потери)
-        self.bce_loss = nn.BCEWithLogitsLoss()
-
-        # TV Loss (сглаживание артефактов)
+        # self.bce_loss = nn.BCEWithLogitsLoss()
         self.tv_loss = TVLoss()
 
     def forward(self, out_labels, out_images, target_images):

@@ -361,7 +361,7 @@ def upscale_image(model_name: str, weights_file: str, input_folder: str, output_
             log_message(log_filename, f'Median PSNR: {median_psnr:.2f} dB')
             log_message(log_filename, f'Median SSIM: {median_ssim:.4f}')
         log_message(log_filename, f'Median NIQE: {median_niqe:.4f}')
-            
+    
     except Exception as e:
         log_message(log_filename, f"Error calculating median metrics: {str(e)}\n{traceback.format_exc()}")  # Логируем ошибку
 

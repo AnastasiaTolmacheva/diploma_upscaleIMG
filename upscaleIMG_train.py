@@ -14,7 +14,6 @@ from loss import GeneratorLoss
 import platform
 import matplotlib.pyplot as plt
 import datetime
-import time
 
 
 def log_message(log_filename: str, message: str) -> None:
@@ -148,12 +147,10 @@ def train_srcnn(train_data: str, val_data: str, output: str, scale: int, epochs:
         val_losses = []    # Список со значениями функции потерь на валидационных данных
         train_psnrs = []    # Список со значениями PSNR на тренировочных данных
         val_psnrs = []  # Список со значениями PSNR на валидационных данных
-        epoch_times = []    # Список с длительностями эпох
 
         # Цикл обучения и валидации
         for epoch in range(1, epochs + 1):
             model.train()  # Переводим модель в режим тренировки
-            start_time = time.time() # Начинаем замер времени выполнения эпохи
             epoch_losses_meter = AverageMeter()  # Средний показатель потерь для эпохи
             epoch_psnr_meter = AverageMeter()  # Средний показатель PSNR для эпохи
             
@@ -179,10 +176,8 @@ def train_srcnn(train_data: str, val_data: str, output: str, scale: int, epochs:
                     train_bar.update(1)
             
             # Сохранение значений функциии потерь и PSNR после завершения эпохи
-            end_time = time.time()
             train_losses.append(epoch_losses_meter.avg)
             train_psnrs.append(epoch_psnr_meter.avg.detach().cpu().numpy())
-            epoch_times.append(end_time - start_time)
 
             # Сохранение модели после каждой эпохи
             torch.save(model.state_dict(), os.path.join(output, f'srcnn_epoch_{epoch}_scale_x{scale}.pth'))
@@ -277,12 +272,10 @@ def train_espcn(train_data: str, val_data: str, output: str, scale: int, epochs:
         val_losses = []    # Список со значениями функции потерь на валидационных данных
         train_psnrs = []    # Список со значениями PSNR на тренировочных данных
         val_psnrs = []  # Список со значениями PSNR на валидационных данных
-        epoch_times = []    # Список с длительностями эпох
 
         # Цикл обучения и валидации
         for epoch in range(1, epochs + 1):
             model.train()  # Переводим модель в режим тренировки
-            start_time = time.time() # Начинаем замер времени выполнения эпохи
             epoch_losses_meter = AverageMeter()  # Средний показатель потерь для эпохи
             epoch_psnr_meter = AverageMeter()  # Средний показатель PSNR для эпохи
 
@@ -308,8 +301,6 @@ def train_espcn(train_data: str, val_data: str, output: str, scale: int, epochs:
                     train_bar.update(1)
 
             # Сохранение значений функциии потерь и PSNR после завершения эпохи
-            end_time = time.time()
-            epoch_times.append(end_time - start_time)
             train_losses.append(epoch_losses_meter.avg)
             train_psnrs.append(epoch_psnr_meter.avg.detach().cpu().numpy())
 
@@ -409,13 +400,11 @@ def train_srgan(train_data: str, val_data: str, output: str, scale: int, epochs:
         val_losses = []    # Список со значениями функции потерь на валидационных данных
         train_psnrs = []    # Список со значениями PSNR на тренировочных данных
         val_psnrs = []  # Список со значениями PSNR на валидационных данных
-        epoch_times = []    # Список с длительностями эпох
         
         # Цикл обучения и валидации
         for epoch in range(1, epochs + 1):
             netG.train()    # Переводим генератор в режим обучения
             netD.train()    # Переводим дискриминатор в режим обучения
-            start_time = time.time() # Начинаем замер времени выполнения эпохи
             epoch_losses_meter = AverageMeter()  # Средний показатель потерь для эпохи
             epoch_psnr_meter = AverageMeter()  # Средний показатель PSNR для эпохи
 
@@ -453,8 +442,6 @@ def train_srgan(train_data: str, val_data: str, output: str, scale: int, epochs:
                     train_bar.update(1)
 
             # Сохранение значений функциии потерь и PSNR после завершения эпохи
-            end_time = time.time()
-            epoch_times.append(end_time - start_time)
             train_losses.append(epoch_losses_meter.avg)
             train_psnrs.append(epoch_psnr_meter.avg)
 
@@ -538,7 +525,7 @@ if __name__ == "__main__":
     if args.epochs <= 0 or args.batch_size <= 0 or args.crop_size <= 0:
         print("Invalid value: epochs, batch_size and crop_size must be more than 0.")
     else:
-        # Проверка, что в данных указан правильный скейл только для SRCNN и ESPCN
+        # Проверка, что в данных указан правильный скейл
         if args.model in ["SRCNN", "ESPCN"]:
             if not check_scale_in_filename(args.train_data, args.scale) or not check_scale_in_filename(args.val_data, args.scale):
                 print(f"Error: The scale factor '{args.scale}' is not present in the filenames of train daat or val data.")
